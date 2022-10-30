@@ -94,13 +94,13 @@ func (s Set[Element]) Intersection(s2 Set[Element]) Set[Element] {
 	return s3
 }
 
-func (s Set[Element]) IsSubset(s2 Set[Element]) (isSubSet bool) {
-	isSubSet = true
+func (s Set[Element]) IsSubset(s2 Set[Element]) (isSubset bool) {
+	isSubset = true
 
 	s2.Range(func(element Element) bool {
-		isSubSet = s.Has(element)
-		return isSubSet
+		isSubset = s.Has(element)
+		return isSubset
 	})
 
-	return isSubSet
+	return isSubset
 }
