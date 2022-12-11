@@ -4,55 +4,55 @@ import "golang.org/x/exp/maps"
 
 type None = struct{}
 
-type Set[Element comparable] map[Element]None
+type Set[Elem comparable] map[Elem]None
 
-func (s Set[Element]) Store(elements ...Element) {
-	for _, element := range elements {
-		s[element] = None{}
+func (s Set[Elem]) Store(elems ...Elem) {
+	for _, elem := range elems {
+		s[elem] = None{}
 	}
 }
 
-func (s Set[Element]) Delete(elements ...Element) {
-	for _, element := range elements {
-		delete(s, element)
+func (s Set[Elem]) Delete(elems ...Elem) {
+	for _, elem := range elems {
+		delete(s, elem)
 	}
 }
 
-func (s Set[Element]) Range(f func(element Element) bool) {
-	for element := range s {
-		if !f(element) {
+func (s Set[Elem]) Range(f func(elem Elem) bool) {
+	for elem := range s {
+		if !f(elem) {
 			return
 		}
 	}
 }
 
-func (s Set[Element]) Has(element Element) (has bool) {
-	_, has = s[element]
+func (s Set[Elem]) Has(elem Elem) (has bool) {
+	_, has = s[elem]
 	return has
 }
 
-func (s Set[Element]) Clone() Set[Element] {
+func (s Set[Elem]) Clone() Set[Elem] {
 	return maps.Clone(s)
 }
 
-func (s Set[Element]) Equal(s2 Set[Element]) (equal bool) {
+func (s Set[Elem]) Equal(s2 Set[Elem]) (equal bool) {
 	return maps.Equal(s, s2)
 }
 
-func (s Set[Element]) Len() (length int) {
+func (s Set[Elem]) Len() (length int) {
 	return len(s)
 }
 
-func (s Set[Element]) Slice() []Element {
+func (s Set[Elem]) Slice() []Elem {
 	return maps.Keys(s)
 }
 
-func (s Set[Element]) Clear() {
+func (s Set[Elem]) Clear() {
 	maps.Clear(s)
 }
 
-func (s Set[Element]) Union(s2 Set[Element]) Set[Element] {
-	s3 := make(Set[Element], s.Len()+s2.Len())
+func (s Set[Elem]) Union(s2 Set[Elem]) Set[Elem] {
+	s3 := make(Set[Elem], s.Len()+s2.Len())
 
 	maps.Copy(s3, s)
 	maps.Copy(s3, s2)
@@ -60,12 +60,12 @@ func (s Set[Element]) Union(s2 Set[Element]) Set[Element] {
 	return s3
 }
 
-func (s Set[Element]) Difference(s2 Set[Element]) Set[Element] {
-	s3 := make(Set[Element], s.Len())
+func (s Set[Elem]) Difference(s2 Set[Elem]) Set[Elem] {
+	s3 := make(Set[Elem], s.Len())
 
-	s.Range(func(element Element) bool {
-		if !s2.Has(element) {
-			s3.Store(element)
+	s.Range(func(elem Elem) bool {
+		if !s2.Has(elem) {
+			s3.Store(elem)
 		}
 
 		return true
@@ -74,18 +74,16 @@ func (s Set[Element]) Difference(s2 Set[Element]) Set[Element] {
 	return s3
 }
 
-func (s Set[Element]) Intersection(s2 Set[Element]) Set[Element] {
-	length := s.Len()
-
-	if length2 := s2.Len(); length > length2 {
-		length = length2
+func (s Set[Elem]) Intersection(s2 Set[Elem]) Set[Elem] {
+	n := s.Len()
+	if n2 := s2.Len(); n > n2 {
+		n = n2
 	}
 
-	s3 := make(Set[Element], length)
-
-	s.Range(func(element Element) bool {
-		if s2.Has(element) {
-			s3.Store(element)
+	s3 := make(Set[Elem], n)
+	s.Range(func(elem Elem) bool {
+		if s2.Has(elem) {
+			s3.Store(elem)
 		}
 
 		return true
@@ -94,11 +92,11 @@ func (s Set[Element]) Intersection(s2 Set[Element]) Set[Element] {
 	return s3
 }
 
-func (s Set[Element]) IsSubset(s2 Set[Element]) (isSubset bool) {
+func (s Set[Elem]) IsSubset(s2 Set[Elem]) (isSubset bool) {
 	isSubset = true
 
-	s2.Range(func(element Element) bool {
-		isSubset = s.Has(element)
+	s2.Range(func(elem Elem) bool {
+		isSubset = s.Has(elem)
 		return isSubset
 	})
 
